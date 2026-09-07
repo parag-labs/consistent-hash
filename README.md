@@ -64,4 +64,18 @@ never moves more than a bounded fraction of keys.
 - **Weighted nodes aren't first-class.** You can approximate a bigger node by giving
   it more replicas, but there's no explicit weight parameter yet.
 
+## Layout
+
+```
+consistent-hash/
+├── python/         reference implementation (ring + virtual nodes) + pytest suite
+├── csharp/         .NET 10 port - HashRing.cs + the stress suite
+├── java/           JDK 17+ port (Maven)
+├── bench/          benchmark.py - remap fraction vs the naive hash % N
+├── docs/diagrams/  architecture diagrams
+├── DESIGN.md       virtual nodes, remap-on-membership-change, the trade-offs
+└── BENCHMARKS.md   reproducible numbers
+```
+
+
 Part of [parag-labs](https://github.com/parag-labs) - small, focused tools for building systems you can trust.
