@@ -83,7 +83,6 @@ consistent-hash/
 ├── csharp/         .NET 10 port - HashRing.cs + the stress suite
 ├── java/           JDK 17+ port (Maven)
 ├── bench/          benchmark.py - remap fraction vs the naive hash % N
-├── docs/diagrams/  architecture diagrams
 ├── DESIGN.md       virtual nodes, remap-on-membership-change, the trade-offs
 └── BENCHMARKS.md   reproducible numbers
 ```
