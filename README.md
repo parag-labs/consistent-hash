@@ -13,6 +13,17 @@ wrote one clean version I trust and can point people to.
 
 ## How it works
 
+
+```mermaid
+flowchart LR
+  classDef proc fill:#4a90e2,stroke:#2c5aa0,color:#fff
+  classDef good fill:#27ae60,stroke:#1e8449,color:#fff
+  classDef work fill:#8e44ad,stroke:#6c3483,color:#fff
+  B3["before - 3 nodes<br/>A - B - C<br/>keys land clockwise"]:::proc
+  ADD["add node D"]:::work
+  A4["after - 4 nodes<br/>A - B - C - D<br/>D takes only the A to D arc<br/>(~1/N of keys move)"]:::good
+  B3 --> ADD --> A4
+```
 Keys and nodes are hashed onto the same circular space. A key is owned by the first
 node found clockwise from the key's position. When a node leaves, only the keys
 between it and its predecessor move - everything else stays put. Each physical node
