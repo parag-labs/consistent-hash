@@ -21,7 +21,7 @@ membership change moves only the keys near the node that joined or left. The goa
 
 ![ring rebalance](docs/diagrams/ring-rebalance.png)
 
-*(Source: [`docs/diagrams/ring-rebalance.excalidraw`](docs/diagrams/ring-rebalance.excalidraw) - editable in [excalidraw](https://aka.ms/excalidraw).)*
+*(The same diagram renders inline as Mermaid in the [README](README.md#how-it-works); this PNG is a static export.)*
 
 ## Key design decisions
 
