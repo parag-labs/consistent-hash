@@ -67,10 +67,62 @@ hot, so I optimized the lookup path and kept mutation simple and obviously corre
 - **Not a distributed system.** This is the ring data structure, not a cluster.
   There's no membership gossip, failure detection, health checking, or a daemon that
   rebalances anything. Wiring it into a real cluster is the caller's job.
-- **No first-class weighting.** See above.
+- **No first-class weighting on the ring.** The ring uses uniform replicas; for
+  weighted placement, use the rendezvous strategy (see below).
 - **No replication/consistency guarantees beyond selecting replica *targets*.**
   `get_replicas` tells you which N nodes should hold a key; it does not replicate
   anything or reason about quorums.
+
+## The strategy family
+
+The ring is the classic answer, but "consistent hashing" is really a family of
+algorithms that trade memory, lookup cost, balance, and disruption differently. The
+library implements five behind one idea - *given a key, pick a node, and move as few
+keys as possible when membership changes* - so you can pick the one that fits:
+
+| Strategy | Origin | Lookup | State | Best at |
+|----------|--------|--------|-------|---------|
+| **Ring + virtual nodes** | Karger et al. '97 / Dynamo | O(log V) | sorted ring | the general default; replica selection |
+| **Rendezvous (HRW)** | Thaler & Ravishankar '98 | O(N) | none | weights, tiny clusters, no ring to rebuild |
+| **Jump** | Lamping & Veach '14 | O(ln N) | none | huge speed, minimal memory, append-only buckets |
+| **Maglev** | Google '16 | O(1) | lookup table | near-perfect balance with a single array index |
+| **Bounded-load** | Google '17 | O(log V) amortized | ring + counts | hard cap on any node's share (anti-hot-spot) |
+
+**Rendezvous (highest random weight).** Score every node for the key with a hash of
+`node#key` and take the max. No ring, no rebuild, and weights are first-class: a
+heavier node simply scores higher more often. The cost is O(N) per lookup, which is
+fine for the small-N case (a handful of shards) where it shines. Removing a node only
+moves the keys that scored it first - everyone else's max is unchanged.
+
+**Jump.** Lamping & Veach's trick computes a bucket in the range `[0, N)` with no
+state at all - just a short loop over a seeded LCG. It's the fastest and smallest of
+the five, but the buckets are an ordered range: you can grow or shrink at the tail,
+not pull an arbitrary node out of the middle without reshuffling the tail. Great for
+"N mostly grows" systems (sharded storage that scales out).
+
+**Maglev.** Build a fixed prime-sized permutation table once; every node claims table
+slots in a deterministic interleaving. Lookups are a single array index, balance is
+tighter than the ring, and losing a node only rewrites its slots. The table costs
+memory (a prime a few times the node count) and a rebuild on membership change - the
+price for O(1) lookups and excellent spread.
+
+**Bounded-load.** The ring's one weakness is a *hot* node - a skewed key distribution
+can overload one shard even with even hashing. Google's bounded-load variant caps any
+node at `ceil((1 + epsilon) * keys / nodes)`; when the clockwise owner is full, the
+key overflows to the next node under cap. It keeps consistent hashing's minimal-remap
+property while guaranteeing no node exceeds its fair share by more than `epsilon`. The
+trade-off is that placement now depends on load, so it's stateful and order-sensitive.
+
+**Weighting is no longer a non-goal.** The ring still uses uniform replicas, but
+rendezvous gives first-class integer weights, which is the cleaner place for it.
+
+**One hash, one contract.** Every strategy uses FNV-1a - 32-bit for the ring's slots,
+64-bit for the strategies that need a wider space (jump's LCG seed, Maglev's table
+offsets, rendezvous scores). Because the hashes are fixed and portable, the golden
+vectors in `conformance/` pin each strategy's placement so the Go, Rust, Python, C#,
+Java, and TypeScript ports agree byte-for-byte. The one exception is *weighted*
+rendezvous: it uses a logarithm, which rounds differently per language, so only
+unweighted placement is in the cross-language vectors (weighting is tested per port).
 
 ## Benchmarks
 
