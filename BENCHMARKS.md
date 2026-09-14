@@ -11,6 +11,37 @@ is the naive approach everyone reaches for first - `hash(key) % N` - which is th
 honest thing to measure against, since consistent hashing exists precisely to fix its
 remap behavior.
 
+## The five strategies, head to head
+
+Produced by `bench/strategies.py`. Each strategy is measured on the same three axes -
+disruption when the cluster grows from 8 to 9 nodes, load balance across 8 nodes over
+50,000 keys, and single-thread lookup throughput in pure Python.
+
+![strategy comparison](bench/results/strategies.png)
+
+| Strategy | Disruption (8→9, ideal 11.1%) | Load spread (CoV) | Lookups/sec |
+|----------|:-----------------------------:|:-----------------:|:-----------:|
+| Ring + virtual nodes | 13.3% | 26.3% | ~336,000 |
+| Rendezvous (HRW) | 14.5% | 18.4% | ~2,800 |
+| Jump | 11.4% | **1.1%** | ~107,000 |
+| Maglev | 11.8% | **1.7%** | ~239,000 |
+| Bounded-load | 19.8% | 21.8% | ~146,000 |
+
+What the numbers say, and why you'd pick each:
+
+- **Jump and Maglev win on balance** by a wide margin - ~1-2% spread versus the ring's
+  ~26% - and sit closest to the ideal disruption. That is exactly why they show up in
+  high-scale load balancers and sharded storage. Jump costs almost nothing in memory;
+  Maglev pays a prime-sized table for its single-index lookups.
+- **Rendezvous is accurate but O(N)** - the throughput number (~2,800/sec) is the honest
+  cost of scoring every node on every lookup. It shines at small N and when you want
+  first-class weights, not on a 50-node cluster in a hot path.
+- **Bounded-load trades disruption for safety.** Its ~20% disruption is the highest here
+  because capping a hot node forces some keys onto their second choice - the price of
+  guaranteeing no node exceeds its fair share by more than epsilon.
+- **The ring is the balanced default:** fastest lookups (a binary search over sorted
+  slots) and decent everything-else, which is why it's the one most people reach for.
+
 ## Remap cost: the whole point
 
 ![remap cost vs modulo](bench/results/remap_vs_modulo.png)

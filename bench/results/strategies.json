@@ -1,0 +1,27 @@
+{
+  "ring": {
+    "disruption_pct": 13.28,
+    "balance_cov_pct": 26.34,
+    "lookups_per_sec": 335662
+  },
+  "rendezvous": {
+    "disruption_pct": 14.45,
+    "balance_cov_pct": 18.35,
+    "lookups_per_sec": 2754
+  },
+  "jump": {
+    "disruption_pct": 11.4,
+    "balance_cov_pct": 1.13,
+    "lookups_per_sec": 106963
+  },
+  "maglev": {
+    "disruption_pct": 11.79,
+    "balance_cov_pct": 1.65,
+    "lookups_per_sec": 239494
+  },
+  "bounded": {
+    "disruption_pct": 19.81,
+    "balance_cov_pct": 21.76,
+    "lookups_per_sec": 145958
+  }
+}
