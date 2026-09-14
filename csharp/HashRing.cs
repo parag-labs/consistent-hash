@@ -42,6 +42,19 @@ public sealed class HashRing
         return h;
     }
 
+    /// <summary>FNV-1a 64-bit, used by the rendezvous, jump and Maglev strategies.</summary>
+    public static ulong Fnv1a64(string data)
+    {
+        ulong h = 0xCBF29CE484222325;
+        foreach (var b in System.Text.Encoding.UTF8.GetBytes(data))
+        {
+            h ^= b;
+            h *= 0x100000001B3;
+        }
+
+        return h;
+    }
+
     public IReadOnlyList<string> Nodes => _nodes.OrderBy(n => n, StringComparer.Ordinal).ToList();
 
     public int Count => _nodes.Count;

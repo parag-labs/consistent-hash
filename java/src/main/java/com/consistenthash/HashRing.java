@@ -41,6 +41,17 @@ public final class HashRing {
         return h;
     }
 
+    /** FNV-1a 64-bit, used by the rendezvous, jump and Maglev strategies. Returned as
+     * a long whose bits are the unsigned 64-bit hash. */
+    public static long fnv1a64(String data) {
+        long h = 0xCBF29CE484222325L;
+        for (byte b : data.getBytes(StandardCharsets.UTF_8)) {
+            h ^= (b & 0xFF);
+            h *= 0x100000001B3L; // wraps mod 2^64, which is what we want
+        }
+        return h;
+    }
+
     public List<String> nodes() {
         return new ArrayList<>(nodes);
     }
