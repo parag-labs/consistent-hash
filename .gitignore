@@ -11,3 +11,7 @@ obj/
 # Java
 target/
 *.class
+
+# Rust
+target/
+Cargo.lock
