@@ -21,7 +21,7 @@ membership change moves only the keys near the node that joined or left. The goa
 
 ![ring rebalance](docs/diagrams/ring-rebalance.png)
 
-*(The same diagram renders inline as Mermaid in the [README](README.md#how-it-works); this PNG is a static export.)*
+*(A fuller static companion to the README's inline [Mermaid sketch](README.md#how-it-works): the FNV-1a ring, the first-owner-clockwise rule, and the single arc that changes hands when a node joins - so only ~1/N keys move.)*
 
 ## Key design decisions
 
