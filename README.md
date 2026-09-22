@@ -5,7 +5,7 @@ jump, Maglev and bounded-load - implemented in **six languages** with identical
 placement, proven byte-for-byte by a shared set of golden vectors. Plus an interactive
 visualizer so you can watch what "only ~1/N keys move" actually looks like.
 
-[![CI](https://github.com/parag-labs/consistent-hash/actions/workflows/tests.yml/badge.svg)](https://github.com/parag-labs/consistent-hash/actions/workflows/tests.yml)
+[![Continuous integration](https://github.com/parag-labs/consistent-hash/actions/workflows/tests.yml/badge.svg)](https://github.com/parag-labs/consistent-hash/actions/workflows/tests.yml)
 ![Python](https://img.shields.io/badge/Python-3670A0?style=flat-square&logo=python&logoColor=ffdd54)
 ![Go](https://img.shields.io/badge/Go-00ADD8?style=flat-square&logo=go&logoColor=white)
 ![Rust](https://img.shields.io/badge/Rust-000000?style=flat-square&logo=rust&logoColor=white)
