@@ -1,4 +1,4 @@
-name: CI (6 languages + conformance)
+name: Continuous integration (6 languages + conformance)
 
 on:
   push:
