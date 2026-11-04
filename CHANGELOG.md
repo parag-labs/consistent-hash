@@ -9,6 +9,10 @@ All notable changes to this project are documented here. Format follows [Keep a 
 - Toolchains: Python 3.15, Go 1.27 (toolchain go1.27.3), Rust edition 2024 with
   rust-version 1.99, Java 25 (LTS), Node 26 (LTS); .NET stays on 10 with the SDK pinned
   via `csharp/global.json`. CI actions moved to their current majors.
+- Libraries: React 19, Vite 8, `@vitejs/plugin-react` 6, TypeScript 7, Vitest 5 (lockfile
+  resolves from the public npm registry); xunit v3 on Microsoft.Testing.Platform (opted in
+  through `csharp/global.json`, so `dotnet test` is unchanged); JUnit 6, org.json 20260814
+  and Surefire 3.6; matplotlib 3.11+ for the benchmarks.
 
 ## [0.2.0] - 2026-09-14
 

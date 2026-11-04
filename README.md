@@ -112,7 +112,7 @@ consistent-hash/
 ├── rust/           Rust crate (all five strategies)
 ├── csharp/         .NET 10 port
 ├── java/           JDK 25 port (Maven)
-├── web/            TypeScript core + the interactive visualizer (Vite/React)
+├── web/            TypeScript core + the interactive visualizer (Vite 8 / React 19)
 ├── conformance/    golden vectors + generator; the cross-language contract
 ├── bench/          benchmark.py (vs hash % N) and strategies.py (head to head)
 ├── DESIGN.md       why each algorithm, and the trade-offs
