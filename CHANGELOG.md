@@ -2,6 +2,14 @@
 
 All notable changes to this project are documented here. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); this project uses [semantic versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Changed
+
+- Toolchains: Python 3.15, Go 1.27 (toolchain go1.27.3), Rust edition 2024 with
+  rust-version 1.99, Java 25 (LTS), Node 26 (LTS); .NET stays on 10 with the SDK pinned
+  via `csharp/global.json`. CI actions moved to their current majors.
+
 ## [0.2.0] - 2026-09-14
 
 Grew from one strategy in three languages to five strategies in six. Added rendezvous

@@ -1,6 +1,6 @@
 //! The Rust port must reproduce the committed golden vectors exactly.
 
-use consistent_hash::{fnv1a_32, fnv1a_64, BoundedLoad, Jump, Maglev, Rendezvous, Ring};
+use consistent_hash::{BoundedLoad, Jump, Maglev, Rendezvous, Ring, fnv1a_32, fnv1a_64};
 use serde_json::Value;
 use std::fs;
 use std::path::Path;

@@ -10,7 +10,7 @@ mod rendezvous;
 mod ring;
 
 pub use bounded::BoundedLoad;
-pub use jump::{jump_consistent_hash, Jump};
+pub use jump::{Jump, jump_consistent_hash};
 pub use maglev::Maglev;
 pub use rendezvous::Rendezvous;
 pub use ring::Ring;

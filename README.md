@@ -78,14 +78,14 @@ lets the six ports agree.
 
 ## Six languages, one behavior
 
-| Language | Run | Conformance |
-|----------|-----|:-----------:|
-| Python | `cd python && PYTHONPATH=src pytest -q` | ✓ |
-| Go | `cd go && go test ./...` | ✓ |
-| Rust | `cd rust && cargo test` | ✓ |
-| C# (.NET 10) | `cd csharp && dotnet test` | ✓ |
-| Java (17+) | `cd java && mvn test` | ✓ |
-| TypeScript | `cd web && npm test` | ✓ |
+| Language | Toolchain | Run | Conformance |
+|----------|-----------|-----|:-----------:|
+| Python | 3.15 | `cd python && PYTHONPATH=src pytest -q` | ✓ |
+| Go | 1.27 | `cd go && go test ./...` | ✓ |
+| Rust | 1.99+, edition 2024 | `cd rust && cargo test` | ✓ |
+| C# | .NET 10 SDK | `cd csharp && dotnet test` | ✓ |
+| Java | JDK 25 + Maven | `cd java && mvn test` | ✓ |
+| TypeScript | Node 26 LTS | `cd web && npm ci && npm test` | ✓ |
 
 Every port ships a conformance test that replays the golden placements in
 **[conformance/vectors.json](conformance/)** - for a fixed set of nodes and keys, the
@@ -111,7 +111,7 @@ consistent-hash/
 ├── go/             Go port (all five strategies)
 ├── rust/           Rust crate (all five strategies)
 ├── csharp/         .NET 10 port
-├── java/           JDK 17+ port (Maven)
+├── java/           JDK 25 port (Maven)
 ├── web/            TypeScript core + the interactive visualizer (Vite/React)
 ├── conformance/    golden vectors + generator; the cross-language contract
 ├── bench/          benchmark.py (vs hash % N) and strategies.py (head to head)
